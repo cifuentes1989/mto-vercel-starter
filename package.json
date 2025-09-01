@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@prisma/client": "^5.14.0",
-    "@vercel/blob": "^0.18.2",
+    "@vercel/blob": "^lastest",
     "bcrypt": "^5.1.1",
     "next": "14.2.5",
     "pdfkit": "^0.13.0",
