@@ -74,3 +74,4 @@ model Historial {
   actor        String
   solicitud    Solicitud  @relation(fields: [solicitudId], references: [id], onDelete: Cascade)
 }
+
