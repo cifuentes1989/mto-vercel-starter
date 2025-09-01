@@ -35,7 +35,6 @@ export default function Page(){
     setMe(me)
   }
 
-  // First-run seed helper
   async function firstRun(){
     const r = await fetch('/api/first-run',{ method:'POST' })
     const j = await r.json()
@@ -58,7 +57,6 @@ export default function Page(){
     return items.filter(i=>map[rol].includes(i.estado))
   },[items,me])
 
-  // Crear solicitud
   const cPad = useSig()
   const [cNombre,setCNombre]=useState('Juan Conductor')
   const [cUnidad,setCUnidad]=useState('Ambulancia')
@@ -78,7 +76,6 @@ export default function Page(){
 
   const [id,setId]=useState<string>(''); const sel = items.find(s=>s.id===id)
 
-  // Taller diag
   const tPad = useSig(); const [tIng,setTIng]=useState(''); const [tDiag,setTDiag]=useState('')
   async function enviarDiag(){
     if(!sel) return; if(!tDiag) return alert('Ingresa diagnóstico')
@@ -87,7 +84,6 @@ export default function Page(){
     tPad.clear(); setTDiag(''); setTIng(''); await cargar(); alert('Enviado a Coordinación')
   }
 
-  // Coordinación
   const cPadA = useSig(); const [dec,setDec]=useState<'APROBADO'|'RECHAZADO'|'ESPERA'>('APROBADO'); const [mot,setMot]=useState('')
   async function decidir(){
     if(!sel) return
@@ -96,7 +92,6 @@ export default function Page(){
     cPadA.clear(); setMot(''); await cargar(); alert('Decisión guardada')
   }
 
-  // Reparación
   const tPadR = useSig(); const [iRep,setIRep]=useState(''); const [fRep,setFRep]=useState(''); const [resp,setResp]=useState(''); const [acts,setActs]=useState(''); const [reps,setReps]=useState(''); const [sal,setSal]=useState('')
   async function finRep(){
     if(!sel) return; if(!fRep || !resp) return alert('Fin y Responsable obligatorios')
@@ -105,7 +100,6 @@ export default function Page(){
     tPadR.clear(); await cargar(); alert('Pasado a ENTREGA')
   }
 
-  // Entrega
   const ePad = useSig(); const [sat,setSat]=useState<'OK'|'NO_CONFORME'>('OK')
   async function firmarEntrega(){
     if(!sel) return
@@ -114,7 +108,6 @@ export default function Page(){
     ePad.clear(); await cargar(); alert('Entrega firmada')
   }
 
-  // Finalizar + PDF
   async function finalizar(){
     if(!sel) return
     const r = await fetch(`/api/solicitudes/${sel.id}/finalizar`,{method:'POST'})
@@ -124,7 +117,6 @@ export default function Page(){
   return (
     <div style={{maxWidth:1100, margin:'10px auto', padding:'10px'}}>
       <h1 style={{fontSize:18, fontWeight:700}}>🛠️ Sistema de Solicitud de Mantenimiento</h1>
-      <p>Si es la primera vez que despliegas, ejecuta este paso para crear usuarios demo:</p>
       <button onClick={firstRun}>Primer uso (crear usuarios demo)</button>
 
       {!me && (

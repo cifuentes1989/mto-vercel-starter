@@ -15,7 +15,7 @@ export async function saveDataUrl(folder: string, dataUrl?: string|null){
     addRandomSuffix: false,
     contentType: `image/${ext}`
   });
-  return blob.url; // public URL
+  return blob.url;
 }
 
 export async function savePdf(name: string, buffer: Buffer){
