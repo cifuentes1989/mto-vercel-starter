@@ -1,0 +1,74 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Rol { CONDUCTOR TALLER COORDINACION ADMIN }
+enum Estado { SOLICITUD REVISION_TALLER APROBACION_COORD REPARACION_EN_CURSO ENTREGA COMPLETADA }
+enum Decision { APROBADO RECHAZADO ESPERA }
+enum Satisfaccion { OK NO_CONFORME }
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  nombre    String
+  rol       Rol
+  passHash  String
+  creadoEn  DateTime @default(now())
+}
+
+model Solicitud {
+  id              String   @id
+  fechaSolicitud  DateTime @default(now())
+  estado          Estado
+
+  conductorId     String
+  conductorNombre String
+  unidad          String
+  placa           String
+  necesidad       String
+  firmaConductor  String?
+
+  horaIngresoTaller   DateTime?
+  diagnosticoTaller   String?
+  firmaTallerDiag     String?
+
+  decisionCoord       Decision?
+  motivoRechazo       String?
+  firmaCoordAprob     String?
+
+  inicioReparacion    DateTime?
+  finReparacion       DateTime?
+  actividades         String?
+  repuestos           String?
+  responsableReparacion String?
+  horaSalidaTaller    DateTime?
+  firmaReparacion     String?
+
+  entregaSatisfaccion  Satisfaccion?
+  firmaEntregaConductor String?
+
+  firmaCoordFinal String?
+  pdfUrl          String?
+
+  creadoPor     String
+  ultimoEditor  String
+
+  historial     Historial[]
+
+  @@index([estado])
+  @@index([placa])
+}
+
+model Historial {
+  id           String     @id @default(uuid())
+  solicitudId  String
+  ts           DateTime   @default(now())
+  evento       String
+  actor        String
+  solicitud    Solicitud  @relation(fields: [solicitudId], references: [id], onDelete: Cascade)
+}
