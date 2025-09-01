@@ -75,3 +75,4 @@ model Historial {
   solicitud    Solicitud  @relation(fields: [solicitudId], references: [id], onDelete: Cascade)
 }
 
+
